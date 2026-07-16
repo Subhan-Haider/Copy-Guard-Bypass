@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copy Guard Bypass</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>Copy Guard</h1>
+          <span class="badge">PRO BYPASS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Card -->
+    <div class="status-card" id="status-card">
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text" id="status-text">Inactive on this site</span>
+      </div>
+      <div class="domain-info" id="domain-info">detecting domain...</div>
+    </div>
+
+    <!-- Settings Controls -->
+    <div class="settings-list">
+      
+      <!-- Site Switch -->
+      <div class="setting-item">
+        <div class="setting-details">
+          <div class="setting-title">Enable on this site</div>
+          <div class="setting-description">Unblock copy & context menu here</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="site-bypass-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- Super Copy Switch -->
+      <div class="setting-item" id="super-copy-item">
+        <div class="setting-details">
+          <div class="setting-title">Super Copy Mode</div>
+          <div class="setting-description">Aggressive bypass for stubborn sites</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="super-copy-toggle" disabled>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Global Switch -->
+      <div class="setting-item">
+        <div class="setting-details">
+          <div class="setting-title">Bypass globally</div>
+          <div class="setting-description">Enable unblocking on all websites</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="global-bypass-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Text Grabber Button -->
+      <button id="ocr-btn" class="action-btn">
+        <svg style="width: 16px; height: 16px; margin-right: 8px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Text Grabber (OCR)
+      </button>
+
+    </div>
+
+    <!-- Instructions / Footer -->
+    <div class="footer">
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <span class="tip-text">Try holding Ctrl/Cmd while selecting text if a website is extremely stubborn.</span>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

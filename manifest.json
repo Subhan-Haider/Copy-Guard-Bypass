@@ -1,0 +1,69 @@
+{
+  "manifest_version": 3,
+  "name": "Copy Guard Bypass",
+  "version": "1.0.0",
+  "description": "Bypass copy protection, text selection blocks, and right-click restrictions on any website.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' chrome-extension: blob: 'unsafe-eval' 'wasm-unsafe-eval'; img-src 'self' data: blob:; object-src 'self';"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["page-context.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "ocr.html",
+        "ocr.js",
+        "lib/tesseract.min.js",
+        "lib/worker.min.js",
+        "lib/tesseract-core.wasm.js",
+        "lib/tesseract-core.wasm",
+        "lib/tesseract-core-simd.wasm",
+        "lib/lang-data/eng.traineddata"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "sandbox": {
+    "pages": ["ocr.html"]
+  }
+}

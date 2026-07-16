@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copy Prevention Test Sandbox</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #0f172a;
+      color: #cbd5e1;
+    }
+    h1 {
+      color: #f8fafc;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 10px;
+    }
+    .test-box {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .test-box h3 {
+      margin-top: 0;
+      color: #3b82f6;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .badge-css {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .badge-js {
+      background-color: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+    .badge-super {
+      background-color: rgba(168, 85, 247, 0.2);
+      color: #a855f7;
+    }
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .no-pointer {
+      pointer-events: none;
+    }
+    code {
+      background-color: #0f172a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e2e8f0;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Copy Guard Bypass - Testing Sandbox</h1>
+  <p>Use this page to test the extension's unblocking capabilities.</p>
+
+  <!-- CSS Block -->
+  <div class="test-box">
+    <span class="badge badge-css">CSS Block</span>
+    <h3>1. Disabled selection via CSS (user-select: none)</h3>
+    <p class="no-select">This paragraph has <code>user-select: none;</code> applied. Without the extension, you cannot highlight or select this text.</p>
+  </div>
+
+  <!-- CSS Pointer-Events Block -->
+  <div class="test-box">
+    <span class="badge badge-css">CSS Block</span>
+    <h3>2. Disabled selection & interactions via pointer-events: none</h3>
+    <p class="no-pointer">This text has <code>pointer-events: none;</code>. The cursor won't interact with it, and highlighting it is blocked by default.</p>
+  </div>
+
+  <!-- JavaScript contextmenu block -->
+  <div class="test-box" id="context-box">
+    <span class="badge badge-js">JS Block</span>
+    <h3>3. Blocked Right-Click (contextmenu event)</h3>
+    <p>This box blocks the right-click menu. Try right-clicking in this box; without the extension, nothing happens.</p>
+  </div>
+
+  <!-- JavaScript copy block -->
+  <div class="test-box" id="copy-box">
+    <span class="badge badge-js">JS Block</span>
+    <h3>4. Blocked Clipboard copy (copy event)</h3>
+    <p>You can highlight this text, but if you try to copy it (using Ctrl+C or right-click), the website intercepts and blocks the copy event. Go ahead, try to copy this: <strong>[SUCCESSFUL_COPY_KEY_128A]</strong>.</p>
+  </div>
+
+  <!-- Aggressive selectionstart & selection removal block -->
+  <div class="test-box" id="stubborn-box">
+    <span class="badge badge-super">Aggressive JS Block</span>
+    <h3>5. Aggressive Selection Clearing (requires Super Copy)</h3>
+    <p id="stubborn-text">This box uses multiple methods: it prevents <code>selectstart</code> and aggressively clears any selections on <code>mouseup</code> by calling <code>window.getSelection().removeAllRanges()</code>. Standard copy extensions will fail to select this text: <strong>[SUPER_COPY_VERIFICATION_55B]</strong>.</p>
+  </div>
+
+  <script>
+    // 3. Block right click
+    document.getElementById('context-box').addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      alert("Right-click is blocked by this website!");
+    });
+
+    // 4. Block copy
+    document.getElementById('copy-box').addEventListener('copy', function(e) {
+      e.preventDefault();
+      alert("Copying text is blocked on this website!");
+    });
+
+    // 5. Aggressive selection clearing
+    const stubbornBox = document.getElementById('stubborn-box');
+    stubbornBox.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+    });
+    
+    document.addEventListener('mouseup', function(e) {
+      if (e.target.closest('#stubborn-box')) {
+        setTimeout(() => {
+          window.getSelection().removeAllRanges();
+          console.log("Selection cleared by site JavaScript!");
+        }, 10);
+      }
+    });
+  </script>
+</body>
+</html>

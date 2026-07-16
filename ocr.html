@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Copy Guard - Text Grabber (OCR)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-page: #f8fafc;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --color-accent: #3b82f6;
+      --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-family);
+      background-color: #cbd5e1;
+      overflow: hidden;
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+    
+    /* Workspace Area */
+    .workspace {
+      flex: 1;
+      position: relative;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: crosshair;
+      padding: 20px;
+    }
+    
+    #screenshot-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+      box-shadow: 0 10px 40px rgba(15, 23, 42, 0.15);
+      border-radius: 8px;
+    }
+    
+    /* Selection Crop Box Overlay */
+    .crop-overlay {
+      position: absolute;
+      border: 2px dashed var(--color-accent);
+      background-color: rgba(59, 130, 246, 0.15);
+      display: none;
+      pointer-events: none;
+      box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.4);
+      border-radius: 4px;
+    }
+    
+    /* Side Panel */
+    .side-panel {
+      width: 380px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-left: 1px solid rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      box-shadow: -10px 0 30px rgba(15, 23, 42, 0.03);
+      z-index: 10;
+    }
+    
+    .panel-header {
+      margin-bottom: 20px;
+    }
+    .panel-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    .panel-header p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 6px 0 0 0;
+      line-height: 1.4;
+    }
+    
+    .text-area-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: opacity 0.3s ease;
+    }
+    
+    #ocr-textarea {
+      flex: 1;
+      width: 100%;
+      padding: 16px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 12px;
+      background-color: #ffffff;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1.6;
+      resize: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+      box-sizing: border-box;
+    }
+    #ocr-textarea:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: var(--text-secondary);
+    }
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+    
+    /* Loading Spinner */
+    .loader-container {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(59, 130, 246, 0.1);
+      border-top: 4px solid var(--color-accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loader-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+    
+    .tip-box {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      background-color: rgba(59, 130, 246, 0.05);
+      border: 1px solid rgba(59, 130, 246, 0.12);
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <!-- Screenshot Workspace -->
+  <div class="workspace" id="workspace">
+    <img id="screenshot-img" alt="Screenshot" />
+    <div class="crop-overlay" id="crop-overlay"></div>
+  </div>
+
+  <!-- OCR Result Side Panel -->
+  <div class="side-panel">
+    <div class="panel-header">
+      <h2>Text Grabber</h2>
+      <p id="instruction-text">Drag a box over the screenshot to extract text.</p>
+    </div>
+
+    <!-- Extraction Loading State -->
+    <div class="loader-container" id="loader-container">
+      <div class="spinner"></div>
+      <div class="loader-text" id="loader-text">Analyzing image pixels...</div>
+    </div>
+
+    <!-- Formatted text output area -->
+    <div class="text-area-container" id="text-area-container">
+      <textarea id="ocr-textarea" placeholder="Selected text will appear here..."></textarea>
+      
+      <div class="tip-box">
+        💡 Drag a box over any text (like diagrams, code snippets, or scanned menus) and we'll extract it using local offline OCR.
+      </div>
+      
+      <div class="actions">
+        <button class="btn btn-secondary" id="close-btn">Close Tool</button>
+        <button class="btn btn-primary" id="copy-btn">Copy Text</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Local Tesseract library -->
+  <script src="lib/tesseract.min.js"></script>
+  <script src="ocr.js"></script>
+</body>
+</html>
