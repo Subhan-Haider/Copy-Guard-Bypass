@@ -302,4 +302,27 @@ input:disabled + .slider {
   transform: translateY(0);
 }
 
+/* GitHub Link styling in footer */
+.github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.github-link:hover {
+  color: var(--color-accent);
+}
+
+.github-icon {
+  width: 14px;
+  height: 14px;
+}
+
 
