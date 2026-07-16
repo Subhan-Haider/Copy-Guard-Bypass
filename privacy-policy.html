@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Copy Guard Bypass - Privacy Policy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --accent: #3b82f6;
+      --border-color: rgba(15, 23, 42, 0.06);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      padding: 60px 20px;
+    }
+
+    .container {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 24px;
+      margin-bottom: 30px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--text-main);
+    }
+
+    .last-updated {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p, li {
+      font-size: 14.5px;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    .highlight-box {
+      background-color: rgba(59, 130, 246, 0.04);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-weight: 500;
+      color: var(--text-sub);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <div class="logo-container">
+          <div class="logo-badge">C</div>
+          <span style="font-weight: 700; font-size: 18px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Copy Guard</span>
+        </div>
+        <h1>Privacy Policy</h1>
+        <div class="last-updated">Last Updated: July 16, 2026</div>
+      </div>
+
+      <p>This Privacy Policy explains how the <strong>Copy Guard Bypass</strong> extension handles your data. We believe in total data sovereignty and privacy, which is why our extension is designed to run entirely locally in your browser.</p>
+
+      <div class="highlight-box">
+        <p><strong>🔒 Zero Data Collection Guarantee:</strong> Copy Guard Bypass does not collect, store, track, transmit, or share any of your personal data, browser history, screenshots, or copied text. Everything happens 100% offline inside your browser environment.</p>
+      </div>
+
+      <h2>1. Information We Access and How We Use It</h2>
+      <p>To provide its core functionality, the extension requires access to certain APIs. Here is why we need them and how they are used:</p>
+      <ul>
+        <li><strong>Storage:</strong> Used strictly to save your local extension options (e.g., whether you have unblocking enabled globally or for specific domains). This data never leaves your browser.</li>
+        <li><strong>Active Tab & Viewport Capture:</strong> When you activate the Text Grabber (OCR) tool, the extension captures a screenshot of the active tab. This screenshot is immediately loaded into a local canvas for cropping. It is never saved to disk and is never sent over the network.</li>
+        <li><strong>Scripting:</strong> Used to inject clean script modifications (in the main page context) to restore copy/paste functionality on pages that intentionally block standard events.</li>
+        <li><strong>Context Menus:</strong> Used to add right-click options, allowing you to easily toggle unblocking states or copy formatted text quickly.</li>
+        <li><strong>Unlimited Storage:</strong> Allows the browser to temporarily save captured screenshots for local processing without throwing file-size errors on high-resolution displays.</li>
+      </ul>
+
+      <h2>2. Offline OCR Processing</h2>
+      <p>Our Text Grabber (OCR) tool uses a local WebAssembly instance of Tesseract.js. Unlike other OCR extensions that send your images to cloud servers for scanning, Copy Guard Bypass processes all image calculations locally inside a sandboxed environment on your computer. Your cropped screenshots never touch a server.</p>
+
+      <h2>3. Third-Party Services</h2>
+      <p>The extension does not integrate with any third-party analytics platforms, tracker frameworks, or advertising services. No network connections are initiated by the extension background thread.</p>
+
+      <h2>4. Changes to This Privacy Policy</h2>
+      <p>We may update our Privacy Policy from time to time to align with new Chrome store policies. Any changes will be updated on this page. We encourage you to review this policy periodically.</p>
+
+      <h2>5. Contact Us</h2>
+      <p>If you have any questions or feedback regarding this Privacy Policy, feel free to contact the developer directly at your-email@example.com.</p>
+    </div>
+
+    <footer>
+      © 2026 Copy Guard Bypass. All rights reserved.
+    </footer>
+  </div>
+
+</body>
+</html>
