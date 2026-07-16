@@ -302,13 +302,19 @@ input:disabled + .slider {
   transform: translateY(0);
 }
 
-/* GitHub Link styling in footer */
-.github-link {
+/* Footer Links styling */
+.footer-links {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 12px;
   margin-top: 14px;
+}
+
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 11px;
@@ -316,13 +322,19 @@ input:disabled + .slider {
   transition: color 0.2s ease;
 }
 
-.github-link:hover {
+.footer-link:hover {
   color: var(--color-accent);
 }
 
-.github-icon {
+.footer-icon {
   width: 14px;
   height: 14px;
+}
+
+.footer-separator {
+  color: rgba(15, 23, 42, 0.15);
+  font-size: 11px;
+  user-select: none;
 }
 
 
